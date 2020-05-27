@@ -9,11 +9,12 @@ const NASA = ({ copyright, date, explanation, title, url }) => {
 
       <title>Title: {title}</title>
       <date>Date: {date}</date>
-      <img src={url} alt='NASAs Photo'/>
+      <img src={url} alt='NASAs'/>
       <copyright> {copyright} </copyright>
       <explanation> {explanation} </explanation>
 
     </div>
+    
 
   );
   

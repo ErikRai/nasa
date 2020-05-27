@@ -1,71 +1,118 @@
-import React from "react";
+import React, { Component } from 'react';
 import "./App.css";
 import Apod from "./components/Apod";
 import styled from "styled-components";
+import Loader from 'react-loader-spinner'
 
 
-function App() {
+class App extends Component {
+  state = {
+    ApodData: {}
+  }
+
+  componentDidMount() {
+    setTimeout(() => this.getCharacters(), 3000);
+  }
+
+  getCharacters = (url = 'https://swapi.dev/api/people/') => {
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ ApodData: data });
+      })
+      .catch(err => {
+        throw new Error(err);
+      });
+  };
   
-  const InnerContainer = styled.div `
+  render() {  
+    const {results} = this.state.ApodData;
+
+    const InnerContainer = styled.div `
 
     width: 800px;
-
-  `
-  const OuterContainer = styled.div `
-
+    
+    `
+    const OuterContainer = styled.div `
+    
     display: flex;
     justify-content: center;
     text-align: center;
     background-color: #7b8993;
     color: white;
-
-    img{
-
-      border: 10px solid transparent;
-      padding: 15px;
-      border-image: url(https://www.w3schools.com/cssref/border.png) 50 round;
+    background: url(space.gif);
+    background-size: fill;
     
+    img{
+    
+      border: 15px solid transparent;
+      width: 90%;
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px outset white;
+    }
+
+    img:hover {
+      border: 1px outset gold;
     }
 
     copyright {
-
+    
       text-decoration: underline;
       word-spacing: length;
     
     }
 
-  `
-  
-  return (
+    #NASA {
+        transition: all 2s;
+      }
+      #NASA {
+          opacity: 1;
+      }
+      #NASA:hover {
+          opacity: 0;
+      }
+      #NASA:hover {
+        margin-left: 100px;
+      }
+      p, div span { color: white; }
+    }
+    
+    `
 
-    <OuterContainer>
+    return (
 
-      <InnerContainer>
+      <OuterContainer>
+        
+        <InnerContainer>
+          <div className="header">
+              <div className="App">
+                
+                <h1 id="NASA">
+                  NASA's Photo of the Day<span role="img" aria-label='go!'>🚀</span>!
+                </h1>
+                {results
+                  ? <Apod chars={results} />
+                  : <Loader type="Audio" color="cyan" secondaryColor="#ffffff " height={500} width={500} timeout={0}/>
+                }
 
-        <div className="App">
+                <br/>
 
-          <h1>
-            NASA's Photo of the Day<span role="img" aria-label='go!'>🚀</span>!
-          </h1>
+                <footer>
+                  <a href="http://erikrai.codes">@Supreme.Ciento</a> | Cloud Bots™
+                </footer>
+                
+                <br />
 
-          <Apod />
+              </div>
+          </div>
 
-          <br/>
+        </InnerContainer>
 
-          <footer>
-            <a href="http://erikrai.com">@Supreme.Ciento</a> | Cloud Bots™
-          </footer>
-          
-          <br />
+      </OuterContainer>
 
-        </div>
-
-      </InnerContainer>
-
-    </OuterContainer>
-
-  );
-  
+    );
+  }
 }
 
 export default App;

@@ -1,7 +1,9 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import ReactDOM from 'react-dom';
 import NASA from "./Card";
+//import Form from "./Form";
 import styled from "styled-components";
 
 export default function Apod(props) {
@@ -17,7 +19,7 @@ export default function Apod(props) {
 
     width: 100%;
     border-radius: 10px;
-
+    
     `;
 
     useEffect(() => {
@@ -61,9 +63,72 @@ export default function Apod(props) {
           copyright={copyright}
           explanation={explanation}
         />
-
+        <Form />
       </div>
 
     );
     
   }
+
+  class Form extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        username: '',
+        age: null,
+      };
+    }
+    
+    mySubmitHandler = (event) => {
+      event.preventDefault();
+      let age = this.state.age;
+      let day = this.state.day;
+      if (!Number(age)) {
+        alert("Your Month must be a number. ie: '12'");
+      }
+      if (!Number(day)) {
+        alert("Your Day must be a number. ie: '31'");
+      }
+      document.location='&date='+this.state.username+'-'+this.state.age+'-'+this.state.day;
+    }
+    myChangeHandler = (event) => {
+      let nam = event.target.name;
+      let val = event.target.value;
+      this.setState({[nam]: val});
+    }
+    render() {
+      return (
+        <form style={{opacity:'60%'}} onSubmit={this.mySubmitHandler}>
+        <h3>Try Another Date: {this.state.username} {this.state.age} {this.state.day}</h3>
+        <p>Year:</p>
+        <input
+          style={{width:50}}
+          type='text'
+          name='username'
+          onChange={this.myChangeHandler}
+        />
+        <p>Month:</p>
+        <input
+          style={{width:30}}
+          type='text'
+          name='age'
+          onChange={this.myChangeHandler}
+        />
+        <p>Day:</p>
+        <input
+          style={{width:30}}
+          type='text'
+          name='day'
+          onChange={this.myChangeHandler}
+        />
+        <br/>
+        <br/>
+        <input type='submit' />
+        
+        </form>
+      );
+    }
+  }
+  
+  ReactDOM.render(<Form />, document.getElementById('root'));
+  
